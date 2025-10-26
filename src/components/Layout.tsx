@@ -27,14 +27,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full bg-background">
         {/* Desktop Sidebar */}
-        <Sidebar collapsible="icon" className="border-r border-border">
-          <SidebarContent>
+        <Sidebar collapsible="icon" className="border-r border-border bg-card">
+          <SidebarContent className="pt-4">
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupLabel className="px-4">Navigation</SidebarGroupLabel>
+              <SidebarGroupContent className="px-2">
                 <SidebarMenu>
                   {navItems.map((item) => {
                     const isActive = location.pathname === item.path;
@@ -45,10 +45,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                           asChild
                           isActive={isActive}
                           tooltip={item.label}
+                          className="w-full"
                         >
-                          <Link to={item.path}>
-                            <Icon />
-                            <span>{item.label}</span>
+                          <Link to={item.path} className="flex items-center gap-3">
+                            <Icon className="shrink-0" />
+                            <span className="truncate">{item.label}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
@@ -65,12 +66,14 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           {/* Header */}
           <header className="sticky top-0 z-40 bg-card border-b border-border shadow-sm">
             <div className="flex items-center justify-between px-4 py-4">
-              <div className="flex items-center gap-2">
-                <SidebarTrigger />
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">BF</span>
+              <div className="flex items-center gap-3">
+                <SidebarTrigger className="md:flex hidden" />
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                    <span className="text-primary-foreground font-bold text-sm">BF</span>
+                  </div>
+                  <h1 className="text-xl font-semibold text-foreground">BankFlow</h1>
                 </div>
-                <h1 className="text-xl font-semibold text-foreground">BankFlow</h1>
               </div>
               <div className="text-sm text-muted-foreground hidden md:block">
                 Welcome back, Sarah
