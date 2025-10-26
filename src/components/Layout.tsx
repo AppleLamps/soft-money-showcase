@@ -35,7 +35,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar collapsible="icon" className="border-r-2 border-border bg-card shadow-sm">
           <SidebarContent className="pt-6 pb-4">
             {/* Sidebar Header with Logo */}
-            <div className="px-4 pb-6 mb-4 border-b border-border">
+            <div className="px-4 pb-6 mb-4">
               <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shrink-0">
                   <span className="text-primary-foreground font-bold text-base">BF</span>
@@ -72,10 +72,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                         >
                           <Link to={item.path} className="flex items-center gap-3">
                             <Icon className={cn(
-                              "shrink-0 transition-transform",
+                              "shrink-0 transition-transform w-6 h-6",
                               isActive && "scale-110"
                             )} />
-                            <span className="truncate">{item.label}</span>
+                            <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
