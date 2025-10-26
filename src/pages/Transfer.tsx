@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils';
 
 const Transfer = () => {
   const [fromAccount, setFromAccount] = useState('');
@@ -25,6 +26,16 @@ const Transfer = () => {
     }
     if (fromAccount === toAccount) {
       toast.error('Cannot transfer to the same account');
+      return;
+    }
+    const fromAccountData = mockAccounts.find(acc => acc.id === fromAccount);
+    const transferAmount = parseFloat(amount);
+    if (transferAmount <= 0) {
+      toast.error('Transfer amount must be greater than zero');
+      return;
+    }
+    if (fromAccountData && fromAccountData.balance < transferAmount) {
+      toast.error('Insufficient funds in source account');
       return;
     }
     setShowConfirmation(true);
@@ -67,13 +78,18 @@ const Transfer = () => {
                   <SelectValue placeholder="Select account" />
                 </SelectTrigger>
                 <SelectContent>
-                  {mockAccounts.map(account => (
+                  {mockAccounts.filter(acc => acc.balance > 0).map(account => (
                     <SelectItem key={account.id} value={account.id}>
-                      {account.name} - ${account.balance.toFixed(2)}
+                      {account.name} - {formatCurrency(account.balance)}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {fromAccountData && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  Available: {formatCurrency(fromAccountData.balance)}
+                </p>
+              )}
             </div>
 
             <div className="flex justify-center">
@@ -89,9 +105,9 @@ const Transfer = () => {
                   <SelectValue placeholder="Select account" />
                 </SelectTrigger>
                 <SelectContent>
-                  {mockAccounts.map(account => (
+                  {mockAccounts.filter(acc => acc.id !== fromAccount).map(account => (
                     <SelectItem key={account.id} value={account.id}>
-                      {account.name} - ${account.balance.toFixed(2)}
+                      {account.name} - {formatCurrency(Math.abs(account.balance))}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -153,7 +169,7 @@ const Transfer = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Amount:</span>
-              <span className="font-semibold text-lg">${parseFloat(amount || '0').toFixed(2)}</span>
+              <span className="font-semibold text-lg">{formatCurrency(parseFloat(amount || '0'))}</span>
             </div>
             {note && (
               <div className="flex justify-between">

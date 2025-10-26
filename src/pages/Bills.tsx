@@ -3,8 +3,9 @@ import { mockBills } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FileText, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { FileText, CheckCircle2, Clock, AlertCircle, CalendarClock } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils';
 
 const Bills = () => {
   const [bills, setBills] = useState(mockBills);
@@ -56,9 +57,9 @@ const Bills = () => {
         <CardContent className="p-6">
           <p className="text-sm opacity-90 mb-2">Total Due</p>
           <p className="text-4xl font-bold mb-1">
-            ${totalDue.toFixed(2)}
+            {formatCurrency(totalDue)}
           </p>
-          <p className="text-sm opacity-80">{dueBills.length} bills pending</p>
+          <p className="text-sm opacity-80">{dueBills.length} {dueBills.length === 1 ? 'bill' : 'bills'} pending</p>
         </CardContent>
       </Card>
 
@@ -95,14 +96,14 @@ const Bills = () => {
                   </div>
                   <div className="text-right flex-shrink-0 ml-4">
                     <p className="text-2xl font-semibold mb-3 text-foreground">
-                      ${bill.amount.toFixed(2)}
+                      {formatCurrency(bill.amount)}
                     </p>
                     <Button 
                       size="sm" 
                       onClick={() => handleMarkAsPaid(bill.id)}
                       className="whitespace-nowrap"
                     >
-                      Mark as Paid
+                      Pay Now
                     </Button>
                   </div>
                 </div>
@@ -145,7 +146,7 @@ const Bills = () => {
                       </div>
                     </div>
                     <p className="text-xl font-semibold text-foreground">
-                      ${bill.amount.toFixed(2)}
+                      {formatCurrency(bill.amount)}
                     </p>
                   </div>
                 </CardContent>

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { spendingByCategory, monthlySpending } from '@/data/mockData';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { formatCurrency } from '@/lib/utils';
 
 const COLORS = ['#1a1a1a', '#3a3a3a', '#5a5a5a', '#7a7a7a', '#9a9a9a', '#bababa', '#dadada'];
 
@@ -41,6 +42,7 @@ const Insights = () => {
                     border: '1px solid hsl(var(--border))',
                     borderRadius: '8px'
                   }}
+                  formatter={(value: number) => formatCurrency(value)}
                 />
                 <Legend />
               </PieChart>
@@ -72,7 +74,7 @@ const Insights = () => {
                     border: '1px solid hsl(var(--border))',
                     borderRadius: '8px'
                   }}
-                  formatter={(value) => [`$${value}`, 'Amount']}
+                  formatter={(value: number) => [formatCurrency(value), 'Amount']}
                 />
                 <Bar dataKey="amount" fill="hsl(var(--foreground))" radius={[8, 8, 0, 0]} />
               </BarChart>
@@ -96,7 +98,7 @@ const Insights = () => {
                 <div key={category.name} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <span className="font-medium text-foreground">{category.name}</span>
-                    <span className="text-muted-foreground">${category.value.toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatCurrency(category.value)}</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div 
